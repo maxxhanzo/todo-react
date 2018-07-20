@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
-import  Task from './task';
+//import  Task from './task';
 
-class TaskList extends Component {
-	constructor(props) {
-        super(props);
-        this.state = {
-        	list: []
-        }
-        // updateList = updateList.bind(this);
-    }
+const TaskList = function(props) {
 
-	render () {
-		return (
-			<div>
-			</div>
-		)
-	}
+	const tasks = props.tasks;
+	const listItems = tasks.map((task) =>
+	    <li>{task}</li>
+	  );
+	  return (
+	    <ul>{listItems}</ul>
+	  );
 }
 
 export default TaskList;

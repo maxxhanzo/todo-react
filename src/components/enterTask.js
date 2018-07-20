@@ -17,7 +17,7 @@ class EnterTask extends Component {
 
 						onKeyPress={(event)=>{
 							if(event.key === "Enter"){
-								updateList(event.target.value)
+								this.props.enter("test")
 							}
 						}}
 

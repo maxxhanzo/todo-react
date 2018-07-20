@@ -5,24 +5,45 @@ import TaskList from './components/taskList';
 
 import '../css/style.css';
 
-function updateList(taskItem) {
-    this.setState({
-    	list: [...this.state.list, taskItem]
-    })
-}
 
 class App extends Component {
 	constructor(props) {
-		super(props);
-		// this.state = { tasks: [] }
-	}
-
-	render () {
+        super(props);
+        this.state = {
+        	list: []
+        }
+    }
+    render () {
 		return (
 			<div className="main">
-				hi!!!
-				<EnterTask />
-				<TaskList />
+				<div className="input">
+					<input
+							// 	(e)=>{console.log(e.target.value)
+						// 	this.setState({
+						// 	  list: [...this.state.list, e.target.value]
+						// 	})
+						// 	console.log(this.state.list)
+						// }
+
+
+
+					onKeyPress={
+						(e)=>{
+							if(e.key === "Enter"){
+									console.log("enter pressed");
+									this.setState({
+										list: [...this.state.list, e.target.value]
+									})
+									console.log(this.state.list);
+									<TaskList tasks={this.state.list} />
+								}
+							}
+						}
+
+					/>
+				</div>
+
+
 			</div>
 			)
 	}
