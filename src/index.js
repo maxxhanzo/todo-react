@@ -5,45 +5,58 @@ import TaskList from './components/taskList';
 
 import '../css/style.css';
 
+function updateList(taskItem) {
+    this.setState({
+    	list: [...this.state.list, taskItem]
+    })
+}
+
+function generateUID(){
+	let uid = (Math.random() + 1).toString(36).substring(2,7) + new Date().getTime();
+	return uid;
+}
 
 class App extends Component {
 	constructor(props) {
-        super(props);
-        this.state = {
-        	list: []
+		super(props);
+		this.state = {
+        	list: [],
+
         }
-    }
-    render () {
+	}
+
+	render () {
 		return (
 			<div className="main">
-				<div className="input">
-					<input
-							// 	(e)=>{console.log(e.target.value)
-						// 	this.setState({
-						// 	  list: [...this.state.list, e.target.value]
-						// 	})
-						// 	console.log(this.state.list)
-						// }
-
-
-
-					onKeyPress={
-						(e)=>{
-							if(e.key === "Enter"){
-									console.log("enter pressed");
-									this.setState({
-										list: [...this.state.list, e.target.value]
-									})
-									console.log(this.state.list);
-									<TaskList tasks={this.state.list} />
-								}
-							}
+				<EnterTask
+					onTaskEnter={task=> {
+						this.setState({
+								list: [...this.state.list, {id: generateUID(), todo: task, checked: false}]
+							})
 						}
-
-					/>
-				</div>
-
-
+					}
+				/>
+				<TaskList
+					tasks={this.state.list}
+					onTaskSelect={selectedTask => {
+						let arr = this.state.list;
+						let index = arr.map(e => e.id).indexOf(selectedTask.id);
+						arr[index].checked = arr[index].checked ? false : true;
+						this.setState({
+								list: arr
+							})
+						}
+					}
+					onTaskDelete={taskToDelete => {
+						let arr = this.state.list;
+						let index = arr.map(e => e.id).indexOf(taskToDelete.id);
+						arr.splice(index, 1);
+						this.setState({
+								list: arr
+							})
+						}
+					}
+				/>
 			</div>
 			)
 	}

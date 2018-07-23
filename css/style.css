@@ -11,3 +11,33 @@ body {
   margin: 0;
   padding: 30px;
 }
+
+.container{
+	margin: 100px auto 0 auto;
+}
+.main{
+	width: 200px;
+	margin: 0 auto;
+	border: 1px solid black;
+}
+.input-div input{
+	width: 100%;
+	/*padding: 0;*/
+	border: none;
+}
+li.task-single{
+	width: 100%;
+	height: 20px;
+	padding: 5px;
+	margin-bottom: 4px;
+	list-style-type: none;
+	margin-left: -40px;
+}
+.task-single a{
+	float: right;
+	height: 20px;
+	text-decoration: none;
+}
+.checked {
+	text-decoration: line-through;
+}

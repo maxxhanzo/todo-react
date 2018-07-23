@@ -1,37 +1,24 @@
 import React, { Component } from 'react';
 
-class EnterTask extends Component {
-	constructor(props){
-		super(props);
-		this.state = { item: '' }
-	}
-	render () {
+const EnterTask = (props) => {
+
 		return (
-				<div>
+				<div className="input-div">
 					<input
-						// value={this.state.item}
-//						onChange={(event) => {
-//							console.log(event.target.value)
-//							this.setState({item: event.target.value});
-//						}}
 
 						onKeyPress={(event)=>{
-							if(event.key === "Enter"){
-								this.props.enter("test")
+							if((event.key === "Enter") && (event.target.value!=="")){
+								props.onTaskEnter(event.target.value);
+								event.target.value = "";
 							}
 						}}
 
 						/>
-						Value of the input: {this.state.item}
+
 				</div>
 
 			)
-	}
 
-	// (event) => {
-	// 	console.log(event.target.value)
-	// 	this.setState({item: event.target.value});
-	// }
 }
 
 export default EnterTask;

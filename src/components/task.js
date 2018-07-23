@@ -1,7 +1,20 @@
 import React from 'react';
 
-const Task = (props) => {
-	return <li>Task</li>
+const Task = ({task, onTaskSelect, onTaskDelete}) => {
+	return (
+	    <li onClick={()=>onTaskSelect(task)}
+	    className={`task-single ${task.checked?"checked":""}`}>
+	    {task.todo}
+	    <a className="deleteButton"
+	    onClick={
+	    	(e)=>{
+	    		e.preventDefault();
+	    		e.stopPropagation();
+	    		onTaskDelete(task);
+	    	}
+	    }
+	    >delete</a></li>
+	);
 }
 
 export default Task;

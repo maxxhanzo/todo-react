@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-//import  Task from './task';
+import  Task from './task';
 
-const TaskList = function(props) {
+const TaskList = (props) => {
+	const taskItems = props.tasks.map((task, index) => {
+		return <Task
+		onTaskSelect={props.onTaskSelect}
+		onTaskDelete={props.onTaskDelete}
+		key={index} task={task} />
+	});
 
-	const tasks = props.tasks;
-	const listItems = tasks.map((task) =>
-	    <li>{task}</li>
-	  );
-	  return (
-	    <ul>{listItems}</ul>
-	  );
-}
+	return (
+		<ul className="tasks">
+			{taskItems}
+		</ul>
+	);
+
+};
 
 export default TaskList;
-// <Task task={props.task}/>
+
