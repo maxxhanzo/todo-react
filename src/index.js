@@ -5,11 +5,7 @@ import TaskList from './components/taskList';
 
 import '../css/style.css';
 
-function updateList(taskItem) {
-    this.setState({
-    	list: [...this.state.list, taskItem]
-    })
-}
+
 
 function generateUID(){
 	let uid = (Math.random() + 1).toString(36).substring(2,7) + new Date().getTime();
