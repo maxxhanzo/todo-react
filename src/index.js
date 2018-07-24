@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import EnterTask from './components/enterTask';
-import TaskList from './components/taskList';
+import React, { Component } from 	'react';
+import ReactDOM 			from 	'react-dom';
+import EnterTask 			from 	'./components/enterTask';
+import TaskList 			from 	'./components/taskList';
 
 import '../css/style.css';
 
@@ -19,9 +19,37 @@ class App extends Component {
         	list: [],
 
         }
-
-
+        this.handleTaskEnter = this.handleTaskEnter.bind(this);
+        this.handleTaskSelect = this.handleTaskSelect.bind(this);
+        this.handleTaskDelete = this.handleTaskDelete.bind(this);
 	}
+
+	handleTaskEnter(task) {
+		this.setState({
+			list: [...this.state.list, {id: generateUID(), todo: task, checked: false}]
+		})
+	}
+
+	handleTaskSelect(selectedTask) {
+		let arr = this.state.list.slice();
+		let index = arr.map(e => e.id).indexOf(selectedTask.id);
+		arr[index].checked = arr[index].checked ? false : true;
+		this.setState({
+			list: arr
+		})
+	}
+
+	handleTaskDelete(taskToDelete) {
+		let arr = this.state.list.slice();
+		let index = arr.map(e => e.id).indexOf(taskToDelete.id);
+		arr.splice(index, 1);
+		this.setState({
+			list: arr
+		})
+	}
+
+
+
 
 	componentWillMount(){
 		fetch("../api/todos")
@@ -61,33 +89,12 @@ class App extends Component {
 		return (
 			<div className="main">
 				<EnterTask
-					onTaskEnter={task=> {
-						this.setState({
-								list: [...this.state.list, {id: generateUID(), todo: task, checked: false}]
-							})
-						}
-					}
+					onTaskEnter={this.handleTaskEnter}
 				/>
 				<TaskList
 					tasks={this.state.list}
-					onTaskSelect={selectedTask => {
-						let arr = this.state.list.slice();
-						let index = arr.map(e => e.id).indexOf(selectedTask.id);
-						arr[index].checked = arr[index].checked ? false : true;
-						this.setState({
-								list: arr
-							})
-						}
-					}
-					onTaskDelete={taskToDelete => {
-						let arr = this.state.list.slice();
-						let index = arr.map(e => e.id).indexOf(taskToDelete.id);
-						arr.splice(index, 1);
-						this.setState({
-								list: arr
-							})
-						}
-					}
+					onTaskSelect={this.handleTaskSelect}
+					onTaskDelete={this.handleTaskDelete}
 				/>
 			</div>
 			)
