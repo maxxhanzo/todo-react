@@ -19,9 +19,45 @@ class App extends Component {
         	list: [],
 
         }
+
+
+	}
+
+	componentWillMount(){
+		fetch("../api/todos")
+			.then(res => res.json())
+			.then(
+			(result) => {
+				this.setState({
+					list: result.data
+				});
+				console.log(result.data);
+			},
+			(error) => {
+				console.log("error")
+			}
+			)
+
 	}
 
 	render () {
+
+		fetch("../api/todos", {
+			method: 'POST',
+			headers: {'Content-Type':'application/json'},
+			body: JSON.stringify({
+						data: this.state.list
+						})
+		}).then(res => res.json())
+		  .then((data) => {
+		    console.log(data);
+		  },
+		  (error) => {
+		  	console.log(error.message)
+		  });
+
+
+
 		return (
 			<div className="main">
 				<EnterTask
@@ -35,7 +71,7 @@ class App extends Component {
 				<TaskList
 					tasks={this.state.list}
 					onTaskSelect={selectedTask => {
-						let arr = this.state.list;
+						let arr = this.state.list.slice();
 						let index = arr.map(e => e.id).indexOf(selectedTask.id);
 						arr[index].checked = arr[index].checked ? false : true;
 						this.setState({
@@ -44,7 +80,7 @@ class App extends Component {
 						}
 					}
 					onTaskDelete={taskToDelete => {
-						let arr = this.state.list;
+						let arr = this.state.list.slice();
 						let index = arr.map(e => e.id).indexOf(taskToDelete.id);
 						arr.splice(index, 1);
 						this.setState({

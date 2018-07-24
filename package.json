@@ -7,7 +7,8 @@
     "start": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
-    "server": "webpack --mode development && cd server && node app"
+    "both": "webpack --mode development && cd server && node app",
+    "server": "cd server && node app"
   },
   "author": "",
   "license": "ISC",

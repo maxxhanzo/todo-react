@@ -2,66 +2,50 @@ const express 		= 	require("express");
 const app 			= 	express();
 const bodyParser 	= 	require('body-parser');
 const mongoose 		= 	require("mongoose");
+const path 			= 	require("path");
+
 
 mongoose.connect("mongodb://localhost:27017/todo");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'))
 
 let todoSchema = new mongoose.Schema({
     todo: String,
-    checked: Boolean
+    checked: Boolean,
+    id: String
 })
 
 let Todo = mongoose.model("Todo", todoSchema);
 
-// let sampleTask = new Todo({
-//     todo: "go to school",
-//     checked: false
-// })
 
-// sampleTask.save(function(err, todo){
-//     if(err){
-//         console.log("something went wrong")
-//     }else{
-//         console.log("todo saved to the database");
-//         console.log("todo");
-//     }
-// })
 
-// Todo.create({
-//     todo: "incorporate mongo",
-//     checked: false
-// }, function(err, todo){
-//     if(err){console.log(err.message)}else{
-//         console.log(todo);
-//     }
-// });
+app.get("/", function(req, res){
+	res.sendFile(path.resolve("index.html"));
+})
 
-// Todo.find({}, function(err, todos){
-//     if(err){console.log("error while retrieving")}else{
-//         console.log(todos);
-//     }
-// })
 
 app.post("/api/todos", function(req, res){
-	let task = req.body.task;
-	Todo.create({
-	    todo: task,
-	    checked: false
-	}, function(err, todo){
-	    if(err){console.log(err.message)}else{
-	        console.log(todo);
-	        res.sendStatus(201);
-	    }
-	});
-	// res.redirect("/seasons")
+	let arr = req.body.data;
+	// console.log(arr)
+
+	Todo.remove({}, function(){
+		Todo.insertMany(arr, function(error, docs) {
+			if(error){console.log(err.message)}else{
+		        // console.log(docs);
+		        res.sendStatus(201);
+		    }
+		});
+	})
+
 });
 
 app.get("/api/todos", function(req, res){
 	// res.redirect("/seasons")
-	Todo.find({}, function(err, todos){
+	Todo.find({}, {"_id": 0, "todo": 1, "checked": 1, "id":1}, function(err, todos){
 	    if(err){console.log("error while retrieving")}else{
-	        res.send(todos);
+	        // console.log(todos);
+	        res.send({data:todos});
 	    }
 	})
 });
