@@ -25,21 +25,6 @@ app.get("/", function(req, res){
 })
 
 
-app.post("/api/todos", function(req, res){
-	let arr = req.body.data;
-	// console.log(arr)
-
-	Todo.remove({}, function(){
-		Todo.insertMany(arr, function(error, docs) {
-			if(error){console.log(err.message)}else{
-		        // console.log(docs);
-		        res.sendStatus(201);
-		    }
-		});
-	})
-
-});
-
 app.get("/api/todos", function(req, res){
 	// res.redirect("/seasons")
 	Todo.find({}, {"_id": 0, "todo": 1, "checked": 1, "id":1}, function(err, todos){
@@ -50,6 +35,44 @@ app.get("/api/todos", function(req, res){
 	})
 });
 
+app.post("/api/todos", function(req, res){
+	let entry = req.body.data;
+
+	Todo.create(entry, function(err, todo){
+	    if(err){console.log(err.message)}else{
+	        console.log(todo);
+	        res.sendStatus(201);
+	    }
+	});
+
+});
+
+app.delete("/api/todos/:id", function(req, res){
+	Todo.remove({id: req.params.id}, (err, todo) => {
+	    if (err) return res.status(500).send(err);
+	    const response = {
+	        message: "Todo successfully deleted",
+	        id: todo.id
+	    };
+	    return res.status(200).send(response);
+	});
+})
+
+
+app.put("/api/todos/:id", function(req, res){
+	let query = { id: req.params.id };
+	// console.log(req.body.data);
+	let changeDemanded = !req.body.data.checked;
+	// console.log(changeDemanded)
+	Todo.findOneAndUpdate(query, {checked: changeDemanded}, (err, todo) => {
+	    if (err) return res.status(500).send(err);
+	    const response = {
+	        message: "Todo successfully modified",
+	        // id: todo.id
+	    };
+	    return res.status(200).send(response);
+	});
+})
 
 app.listen(3000, function(){
 	console.log("server started");

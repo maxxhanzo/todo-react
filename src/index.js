@@ -28,11 +28,42 @@ class App extends Component {
 		this.setState({
 			list: [...this.state.list, {id: generateUID(), todo: task, checked: false}]
 		})
+
+		fetch("../api/todos", {
+			method: 'POST',
+			headers: {'Content-Type':'application/json'},
+			body: JSON.stringify({
+						data: {id: generateUID(), todo: task, checked: false}
+						})
+		}).then(res => res.json())
+		  .then((data) => {
+		    console.log(data);
+		  },
+		  (error) => {
+		  	console.log(error.message)
+		  });
+
 	}
 
 	handleTaskSelect(selectedTask) {
+
+
+		fetch(`../api/todos/${selectedTask.id}`, {
+			method: 'PUT',
+			headers: {'Content-Type':'application/json'},
+			body: JSON.stringify({
+						data: selectedTask
+						})
+		}).then(res => res.json())
+		  .then((data) => {
+		    console.log(data);
+		  },
+		  (error) => {
+		  	console.log(error.message)
+		  });
+
 		let arr = this.state.list.slice();
-		let index = arr.map(e => e.id).indexOf(selectedTask.id);
+		const index = arr.map(e => e.id).indexOf(selectedTask.id);
 		arr[index].checked = arr[index].checked ? false : true;
 		this.setState({
 			list: arr
@@ -41,11 +72,21 @@ class App extends Component {
 
 	handleTaskDelete(taskToDelete) {
 		let arr = this.state.list.slice();
-		let index = arr.map(e => e.id).indexOf(taskToDelete.id);
+		const index = arr.map(e => e.id).indexOf(taskToDelete.id);
 		arr.splice(index, 1);
 		this.setState({
 			list: arr
 		})
+
+		fetch(`../api/todos/${taskToDelete.id}`, {
+			method: 'DELETE'
+		}).then(res => res.json())
+		  .then((data) => {
+		    console.log(data);
+		  },
+		  (error) => {
+		  	console.log(error.message)
+		  });
 	}
 
 
@@ -69,21 +110,6 @@ class App extends Component {
 	}
 
 	render () {
-
-		fetch("../api/todos", {
-			method: 'POST',
-			headers: {'Content-Type':'application/json'},
-			body: JSON.stringify({
-						data: this.state.list
-						})
-		}).then(res => res.json())
-		  .then((data) => {
-		    console.log(data);
-		  },
-		  (error) => {
-		  	console.log(error.message)
-		  });
-
 
 
 		return (
