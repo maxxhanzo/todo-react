@@ -1,7 +1,7 @@
 import React, { Component } from 	'react';
 import ReactDOM 			from 	'react-dom';
-import EnterTask 			from 	'./components/enterTask';
-import TaskList 			from 	'./components/taskList';
+import EnterTask 			from 	'./components/EnterTask';
+import TaskList 			from 	'./components/TaskList';
 
 import '../css/style.css';
 

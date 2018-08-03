@@ -40,7 +40,7 @@ app.post("/api/todos", function(req, res){
 
 	Todo.create(entry, function(err, todo){
 	    if(err){console.log(err.message)}else{
-	        console.log(todo);
+	        // console.log(todo);
 	        res.sendStatus(201);
 	    }
 	});
@@ -74,7 +74,7 @@ app.put("/api/todos/:id", function(req, res){
 	});
 })
 
-app.listen(3000, function(){
+app.listen(8080, function(){
 	console.log("server started");
 })
 
